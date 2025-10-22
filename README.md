@@ -1,2 +1,13 @@
 # ChatDude
-a simple chat room with JavaFX
+
+一个使用 JavaFX 开发的简易局域网聊天室。
+
+## 注意
+
+- 在测试客户端时，直接将 `Client` 文件夹拖入 VSCode！
+- 测试时，根据当前设备系统环境替换 `lib` 下的文件。本项目在 MacOS 系统下开发。
+
+## 目前实现的功能
+
+- 登录和注册系统
+- 基础聊天功能
