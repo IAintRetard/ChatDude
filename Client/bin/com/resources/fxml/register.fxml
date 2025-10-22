@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" spacing="15" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.loginsystem.RegisterController">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="注册" textAlignment="CENTER">
+      <font>
+         <Font name="System Bold" size="24.0" />
+      </font>
+   </Text>
+   
+   <VBox alignment="CENTER_LEFT" spacing="5">
+      <Label text="用户名" />
+      <TextField fx:id="usernameField" prefHeight="35.0" prefWidth="300.0" />
+   </VBox>
+   
+   <VBox alignment="CENTER_LEFT" spacing="5">
+      <Label text="密码" />
+      <PasswordField fx:id="passwordField" prefHeight="35.0" prefWidth="300.0" />
+   </VBox>
+   
+   <VBox alignment="CENTER_LEFT" spacing="5">
+      <Label text="确认密码" />
+      <PasswordField fx:id="confirmPasswordField" prefHeight="35.0" prefWidth="300.0" />
+   </VBox>
+   
+   <Label fx:id="errorLabel" styleClass="error-label" text="" textFill="RED" />
+   <Label fx:id="successLabel" styleClass="success-label" text="" textFill="GREEN" />
+   
+   <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegister" prefHeight="40.0" prefWidth="300.0" text="注册" />
+   
+   <Hyperlink onAction="#handleBack" text="返回" />
+</VBox>
