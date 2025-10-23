@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<HBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+     fx:controller="com.loginsystem.SettingsController"
+     spacing="20" prefHeight="400.0" prefWidth="600.0">
+
+   <padding>
+      <Insets top="20" right="20" bottom="20" left="20" />
+   </padding>
+
+   <!-- 左侧：垂直按钮列表 -->
+   <VBox fx:id="leftVBox" spacing="10" prefWidth="180" alignment="TOP_CENTER">
+      <Button fx:id="btnAccount" text="账号信息" mnemonicParsing="false" onAction="#showAccount" prefWidth="140" />
+      <Button fx:id="btnGeneral" text="通用设置" mnemonicParsing="false" onAction="#showGeneral" prefWidth="140" />
+   </VBox>
+
+   <!-- 右侧：内容区（将被动态替换） -->
+   <VBox fx:id="contentArea" spacing="10" alignment="TOP_LEFT" prefWidth="400">
+      <!-- 默认加载通用设置简易内容 -->
+      <Text text="请选择左侧的设置项" />
+   </VBox>
+
+</HBox>

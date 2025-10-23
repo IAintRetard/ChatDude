@@ -1,4 +1,3 @@
-// LoginController.java
 package com.loginsystem;
 
 import java.io.BufferedReader;

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+
+<VBox spacing="8" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.loginsystem.SettingsAccountController">
+    <Text text="账号信息">
+        <font>
+            <Font name="System Bold" size="18" />
+        </font>
+    </Text>
+    <!-- <Button fx:id="photo" text="头像" mnemonicParsing="false" onAction="#modifyPhoto" prefWidth="400" /> -->
+    <Button fx:id="name" text="用户名" mnemonicParsing="false" onAction="#modifyName" prefWidth="400" />
+</VBox>

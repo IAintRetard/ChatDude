@@ -96,8 +96,10 @@ public class ChatController {
     private void handleSettings() {
         try {
             Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/resources/fxml/settings.fxml"));
-            Scene scene = new Scene(root, 300, 400);
+            Parent root = FXMLLoader.load(getClass().getResource("/com/resources/fxml/settings/settings.fxml"));
+            Scene scene = new Scene(root, 600, 400);
+            // 确保设置窗口也使用全局样式表
+            scene.getStylesheets().add(getClass().getResource("/com/resources/css/styles.css").toExternalForm());
             stage.setTitle("设置");
             stage.setScene(scene);
             stage.setResizable(false);

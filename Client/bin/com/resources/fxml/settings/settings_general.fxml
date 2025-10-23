@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="8" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <Text text="通用设置">
+        <font>
+            <Font name="System Bold" size="18" />
+        </font>
+    </Text>
+    <Text text="- 主题、语言等基本选项" />
+    <Text text="- 显示和通知设置" />
+</VBox>

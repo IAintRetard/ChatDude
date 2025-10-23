@@ -1,4 +1,3 @@
-// LoginSystemApp.java
 package com.loginsystem;
 
 import java.net.Socket;

@@ -1,4 +1,3 @@
-// RegisterController.java
 package com.loginsystem;
 
 import javafx.fxml.FXML;
