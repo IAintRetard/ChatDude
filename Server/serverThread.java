@@ -50,7 +50,7 @@ public class serverThread implements Runnable {
                         bw.newLine();
                         bw.flush();
                     }
-                } else {
+                } else if (request.equals("chat")) {
                     String sender = br.readLine();
                     String message = br.readLine();
                     fbw.write(sender + ':' + message);
@@ -66,6 +66,22 @@ public class serverThread implements Runnable {
                         skbw.newLine();
                         skbw.flush();
                     }
+                } else if (request.equals("modify_name")) {
+                    String curName = br.readLine();
+                    String newName = br.readLine();
+                    if (server.userInfo.containsKey(newName)) {
+                        bw.write("false");
+                        bw.newLine();
+                        bw.flush();
+                    } else {
+                        String pwd = server.userInfo.get(curName);
+                        server.userInfo.remove(curName);
+                        server.userInfo.put(newName, pwd);
+                        bw.write("true");
+                        bw.newLine();
+                        bw.flush();
+                    }
+
                 }
             }
         } catch (Exception e) {

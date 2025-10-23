@@ -18,6 +18,7 @@ public class server {
 
     public static void main(String[] args) {
         importUserInfo();
+        System.out.println(userInfo);
         try {
             ServerSocket serverSocket = new ServerSocket(114);
             ThreadPoolExecutor pool = new ThreadPoolExecutor(
