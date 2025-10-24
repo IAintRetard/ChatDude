@@ -36,7 +36,7 @@ public class ChatController {
 
         Thread ChatListener = new Thread(() -> {
             while (true) {
-                if (ClientInfo.responseList.isEmpty())
+                if (ClientInfo.responseList.isEmpty() || ClientInfo.stop)
                     continue;
                 if (ClientInfo.responseList.get(0).command.equals("CHAT")) {
                     String sender = ClientInfo.responseList.get(0).sender;

@@ -45,6 +45,7 @@ public class modifyNameController {
             bw.write(newName);
             bw.newLine();
             bw.flush();
+            ClientInfo.stop = true;
             while (true) {
                 if (ClientInfo.responseList.isEmpty())
                     continue;
@@ -61,6 +62,7 @@ public class modifyNameController {
                     break;
                 }
             }
+            ClientInfo.stop = false;
         } catch (Exception e) {
             e.printStackTrace();
         }

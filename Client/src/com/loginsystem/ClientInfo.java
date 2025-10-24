@@ -12,4 +12,6 @@ public class ClientInfo {
     protected static String name;
 
     protected static List<Message> responseList = Collections.synchronizedList(new LinkedList<>());
+
+    protected static Boolean stop = false;
 }
