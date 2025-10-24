@@ -11,13 +11,15 @@ import javafx.stage.Stage;
 
 public class LoginSystemApp extends Application {
 
-    protected static Socket socket;
-
     @Override
     public void init() throws Exception {
         try {
             super.init();
-            socket = new Socket("127.0.0.1", 114);
+            ClientInfo.socket = new Socket("127.0.0.1", 114);
+            // 监听线程，启动！
+            Thread Listener = new Thread(new Listen());
+            Listener.setDaemon(true);
+            Listener.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,10 +41,10 @@ public class LoginSystemApp extends Application {
     public void stop() {
 
         try {
-            if (socket != null) {
-                socket.getInputStream().close();
-                socket.getOutputStream().close();
-                socket.close();
+            if (ClientInfo.socket != null) {
+                ClientInfo.socket.getInputStream().close();
+                ClientInfo.socket.getOutputStream().close();
+                ClientInfo.socket.close();
                 super.stop();
             }
         } catch (Exception e) {

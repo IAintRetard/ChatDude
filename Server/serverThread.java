@@ -23,23 +23,30 @@ public class serverThread implements Runnable {
             String password = new String();
             while (true) {
                 request = br.readLine();
+                System.out.println(request);
                 if (request == null)
                     break;
-                if (request.equals("login")) {
+                if (request.equals("LOGIN")) {
                     userName = br.readLine();
                     password = br.readLine();
+                    bw.write("LOGIN");
+                    bw.newLine();
                     if (!server.userInfo.containsKey(userName) || !server.userInfo.get(userName).equals(password)) {
+                        System.out.println("false");
                         bw.write("false");
                         bw.newLine();
                         bw.flush();
                     } else {
+                        System.out.println("true");
                         bw.write("true");
                         bw.newLine();
                         bw.flush();
                     }
-                } else if (request.equals("register")) {
+                } else if (request.equals("REGISTER")) {
                     userName = br.readLine();
                     password = br.readLine();
+                    bw.write("REGISTER");
+                    bw.newLine();
                     if (server.userInfo.containsKey(userName)) {
                         bw.write("false");
                         bw.newLine();
@@ -50,9 +57,11 @@ public class serverThread implements Runnable {
                         bw.newLine();
                         bw.flush();
                     }
-                } else if (request.equals("chat")) {
+                } else if (request.equals("CHAT")) {
                     String sender = br.readLine();
                     String message = br.readLine();
+                    bw.write("CHAT");
+                    bw.newLine();
                     fbw.write(sender + ':' + message);
                     fbw.newLine();
                     fbw.flush();
@@ -66,9 +75,11 @@ public class serverThread implements Runnable {
                         skbw.newLine();
                         skbw.flush();
                     }
-                } else if (request.equals("modify_name")) {
+                } else if (request.equals("MODIFY_NAME")) {
                     String curName = br.readLine();
                     String newName = br.readLine();
+                    bw.write("MODIFY_NAME");
+                    bw.newLine();
                     if (server.userInfo.containsKey(newName)) {
                         bw.write("false");
                         bw.newLine();

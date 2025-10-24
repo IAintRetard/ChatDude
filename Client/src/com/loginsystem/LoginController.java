@@ -1,9 +1,7 @@
 package com.loginsystem;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import javafx.fxml.FXML;
@@ -27,8 +25,7 @@ public class LoginController {
     @FXML
     private void handleLogin() {
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(LoginSystemApp.socket.getOutputStream()));
-            BufferedReader br = new BufferedReader(new InputStreamReader(LoginSystemApp.socket.getInputStream()));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ClientInfo.socket.getOutputStream()));
             String username = usernameField.getText().trim();
             String password = passwordField.getText().trim();
 
@@ -39,27 +36,35 @@ public class LoginController {
             }
 
             // 验证登录
-            bw.write("login");
+            bw.write("LOGIN");
             bw.newLine();
             bw.write(username);
             bw.newLine();
             bw.write(password);
             bw.newLine();
             bw.flush();
-            String feedBack = br.readLine();
-            if (feedBack.equals("true")) {
-                Stage stage = new Stage();
-                Parent root = FXMLLoader.load(getClass().getResource("/com/resources/fxml/chat.fxml"));
-                Scene scene = new Scene(root, 800, 600);
-                scene.getStylesheets().add(getClass().getResource("/com/resources/css/styles.css").toExternalForm());
-                stage.setTitle("ChatDude");
-                stage.setScene(scene);
-                stage.show();
-                Stage currentStage = (Stage) usernameField.getScene().getWindow();
-                currentStage.close();
-                ChatController.currentUser = username;
-            } else {
-                errorLabel.setText("用户名或密码错误");
+            while (true) {
+                if (ClientInfo.responseList.isEmpty())
+                    continue;
+                if (ClientInfo.responseList.getFirst().command.equals("LOGIN")) {
+                    String feedBack = ClientInfo.responseList.removeFirst().success;
+                    if (feedBack.equals("true")) {
+                        Stage stage = new Stage();
+                        Parent root = FXMLLoader.load(getClass().getResource("/com/resources/fxml/chat.fxml"));
+                        Scene scene = new Scene(root, 800, 600);
+                        scene.getStylesheets()
+                                .add(getClass().getResource("/com/resources/css/styles.css").toExternalForm());
+                        stage.setTitle("ChatDude");
+                        stage.setScene(scene);
+                        stage.show();
+                        Stage currentStage = (Stage) usernameField.getScene().getWindow();
+                        currentStage.close();
+                        ClientInfo.name = username;
+                    } else {
+                        errorLabel.setText("用户名或密码错误");
+                    }
+                    break;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

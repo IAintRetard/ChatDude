@@ -1,10 +1,9 @@
 package com.loginsystem;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
@@ -19,40 +18,51 @@ public class modifyNameController {
 
     @FXML
     private void initialize() {
-        messageInput.setText(ChatController.currentUser);
+        messageInput.setText(ClientInfo.name);
     }
 
     @FXML
     private void Finish() {
         String newName = messageInput.getText().trim();
         if (newName.isEmpty()) {
-            errorMessage.setText("用户名不能为空！");
-        } else if (newName.equals(ChatController.currentUser)) {
-            errorMessage.setText("新用户名不能与当前用户名相同！");
-        } else if (newName.length() < 3) {
-            errorMessage.setText("用户名至少需要3个字符！");
-        } else {
-            // 服务器可以响应并修改用户名，客户端也可以收到服务端的响应，但是之后会卡死
-            try {
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(LoginSystemApp.socket.getOutputStream()));
-                BufferedReader br = new BufferedReader(new InputStreamReader(LoginSystemApp.socket.getInputStream()));
-                bw.write("modify_name");
-                bw.newLine();
-                bw.write(ChatController.currentUser);
-                bw.newLine();
-                bw.write(newName);
-                bw.newLine();
-                bw.flush();
-                String response = br.readLine();
-                if (response.equals("false")) {
-                    errorMessage.setText("用户名已存在！");
-                } else {
-                    ChatController.currentUser = newName;
-                    ((Stage) messageInput.getScene().getWindow()).close();
+            errorMessage.setText("用户名不能为空!");
+            return;
+        }
+        if (newName.equals(ClientInfo.name)) {
+            errorMessage.setText("新用户名不能与当前用户名相同!");
+            return;
+        }
+        if (newName.length() < 3) {
+            errorMessage.setText("用户名至少需要3个字符!");
+            return;
+        }
+        try {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ClientInfo.socket.getOutputStream()));
+            bw.write("MODIFY_NAME");
+            bw.newLine();
+            bw.write(ClientInfo.name);
+            bw.newLine();
+            bw.write(newName);
+            bw.newLine();
+            bw.flush();
+            while (true) {
+                if (ClientInfo.responseList.isEmpty())
+                    continue;
+                if (ClientInfo.responseList.get(0).command.equals("MODIFY_NAME")) {
+                    String success = ClientInfo.responseList.removeFirst().success;
+                    if (success.equals("false")) {
+                        errorMessage.setText("用户名已存在！");
+                    } else {
+                        Platform.runLater(() -> {
+                            ClientInfo.name = newName;
+                        });
+                        ((Stage) messageInput.getScene().getWindow()).close();
+                    }
+                    break;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,9 +1,7 @@
 package com.loginsystem;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import javafx.application.Platform;
@@ -33,23 +31,21 @@ public class ChatController {
     @FXML
     private ScrollPane chatScrollPane;
 
-    protected static String currentUser;
-
     @FXML
     public void initialize() {
-        // 对服务端发来的消息进行监听
+
         Thread ChatListener = new Thread(() -> {
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(LoginSystemApp.socket.getInputStream()));
-                while (true) {
-                    String sender = br.readLine();
-                    String message = br.readLine();
+            while (true) {
+                if (ClientInfo.responseList.isEmpty())
+                    continue;
+                if (ClientInfo.responseList.get(0).command.equals("CHAT")) {
+                    String sender = ClientInfo.responseList.get(0).sender;
+                    String message = ClientInfo.responseList.get(0).content;
                     Platform.runLater(() -> {
                         addMessage(sender, message, false);
                     });
+                    ClientInfo.responseList.remove(0);
                 }
-            } catch (IOException e) {
-                System.out.println("ChatListener disconnected");
             }
         });
         ChatListener.setDaemon(true);
@@ -60,14 +56,14 @@ public class ChatController {
     private void handleSend() {
         String message = messageInput.getText().trim();
         if (!message.isEmpty()) {
-            addMessage(currentUser, message, true);
+            addMessage(ClientInfo.name, message, true);
             messageInput.clear();
 
             try {
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(LoginSystemApp.socket.getOutputStream()));
-                bw.write("chat");
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ClientInfo.socket.getOutputStream()));
+                bw.write("CHAT");
                 bw.newLine();
-                bw.write(currentUser);
+                bw.write(ClientInfo.name);
                 bw.newLine();
                 bw.write(message);
                 bw.newLine();
@@ -109,7 +105,7 @@ public class ChatController {
         }
     }
 
-    private void addMessage(String sender, String content, boolean isCurrentUser) {
+    public void addMessage(String sender, String content, boolean isCurrentUser) {
         Text messageText = new Text(sender + ": " + content);
         messageText.setWrappingWidth(chatScrollPane.getWidth() - 40);
 

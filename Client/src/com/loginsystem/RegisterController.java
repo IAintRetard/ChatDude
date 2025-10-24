@@ -9,10 +9,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import javafx.event.ActionEvent;
@@ -58,22 +56,28 @@ public class RegisterController {
         }
 
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(LoginSystemApp.socket.getOutputStream()));
-            BufferedReader br = new BufferedReader(new InputStreamReader(LoginSystemApp.socket.getInputStream()));
-            bw.write("register");
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ClientInfo.socket.getOutputStream()));
+            bw.write("REGISTER");
             bw.newLine();
             bw.write(username);
             bw.newLine();
             bw.write(password);
             bw.newLine();
             bw.flush();
-            String feedBack = br.readLine();
-            if (feedBack.equals("false")) {
-                showError("用户名已存在");
-                return;
+            while (true) {
+                if (ClientInfo.responseList.isEmpty())
+                    continue;
+                if (ClientInfo.responseList.get(0).command.equals("REGISTER")) {
+                    String feedBack = ClientInfo.responseList.removeFirst().success;
+                    if (feedBack.equals("false")) {
+                        showError("用户名已存在");
+                        return;
+                    }
+                    showSuccess("注册成功！请返回登录界面登录");
+                    clearFields();
+                    break;
+                }
             }
-            showSuccess("注册成功！请返回登录界面登录");
-            clearFields();
         } catch (IOException e) {
             e.printStackTrace();
         }
