@@ -13,8 +13,9 @@
 - 基础聊天功能
 - 设置界面
 
-##项目目录结构
+## 项目目录结构
 
+```
 .
 ├── bin
 │   └── com
@@ -34,5 +35,4 @@
                 └── settings
                     ├── settings_account
                     └── settings_general
-
-19 directories
+ ```
