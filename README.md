@@ -12,3 +12,27 @@
 - 登录和注册系统
 - 基础聊天功能
 - 设置界面
+
+##项目目录结构
+
+.
+├── bin
+│   └── com
+│       ├── loginsystem
+│       └── resources
+│           ├── css
+│           └── fxml
+│               └── settings
+│                   └── settings_account
+├── lib
+└── src
+    └── com
+        ├── loginsystem
+        └── resources
+            ├── css
+            └── fxml
+                └── settings
+                    ├── settings_account
+                    └── settings_general
+
+19 directories
