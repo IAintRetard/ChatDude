@@ -18,9 +18,13 @@ public class Listen implements Runnable {
                     String content = br.readLine();
                     ClientInfo.responseList.add(new Message(command, sender, content));
                 }
-                System.out.println(ClientInfo.responseList.getFirst());
+                for (Message msg : ClientInfo.responseList) {
+                    System.out.print(msg.command + " ");
+                }
+                System.out.println("");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Listener disconnected");
         }
     }

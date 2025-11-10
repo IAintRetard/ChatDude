@@ -60,15 +60,16 @@ public class serverThread implements Runnable {
                 } else if (request.equals("CHAT")) {
                     String sender = br.readLine();
                     String message = br.readLine();
-                    bw.write("CHAT");
-                    bw.newLine();
                     fbw.write(sender + ':' + message);
                     fbw.newLine();
                     fbw.flush();
                     for (Socket sk : server.sockets) {
-                        if (sk.isClosed() || sk == socket)
+                        // if (sk.isClosed() || sk.equals(this.socket))
+                        if (sk.isClosed())
                             continue;
                         BufferedWriter skbw = new BufferedWriter(new OutputStreamWriter(sk.getOutputStream()));
+                        skbw.write("CHAT");
+                        skbw.newLine();
                         skbw.write(sender);
                         skbw.newLine();
                         skbw.write(message);

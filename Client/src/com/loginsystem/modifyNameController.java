@@ -5,13 +5,15 @@ import java.io.OutputStreamWriter;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
 public class modifyNameController {
     @FXML
-    private TextArea messageInput;
+    private TextField messageInput;
 
     @FXML
     private Label errorMessage;
@@ -45,26 +47,34 @@ public class modifyNameController {
             bw.write(newName);
             bw.newLine();
             bw.flush();
-            ClientInfo.stop = true;
             while (true) {
-                if (ClientInfo.responseList.isEmpty())
-                    continue;
-                if (ClientInfo.responseList.get(0).command.equals("MODIFY_NAME")) {
-                    String success = ClientInfo.responseList.removeFirst().success;
-                    if (success.equals("false")) {
-                        errorMessage.setText("用户名已存在！");
-                    } else {
-                        Platform.runLater(() -> {
-                            ClientInfo.name = newName;
-                        });
-                        ((Stage) messageInput.getScene().getWindow()).close();
+                synchronized (ClientInfo.responseList) {
+                    if (!ClientInfo.responseList.isEmpty()) {
+                        if (ClientInfo.responseList.get(0).command.equals("MODIFY_NAME")) {
+                            String success = ClientInfo.responseList.removeFirst().success;
+                            if (success.equals("false")) {
+                                errorMessage.setText("用户名已存在！");
+                            } else {
+                                Platform.runLater(() -> {
+                                    ClientInfo.name = newName;
+                                });
+                                ((Stage) messageInput.getScene().getWindow()).close();
+                            }
+                            break;
+                        }
                     }
-                    break;
                 }
             }
-            ClientInfo.stop = false;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            Finish();
+            event.consume();
         }
     }
 }

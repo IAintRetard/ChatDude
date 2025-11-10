@@ -35,17 +35,26 @@ public class ChatController {
     public void initialize() {
 
         Thread ChatListener = new Thread(() -> {
-            while (true) {
-                if (ClientInfo.responseList.isEmpty() || ClientInfo.stop)
-                    continue;
-                if (ClientInfo.responseList.get(0).command.equals("CHAT")) {
-                    String sender = ClientInfo.responseList.get(0).sender;
-                    String message = ClientInfo.responseList.get(0).content;
-                    Platform.runLater(() -> {
-                        addMessage(sender, message, false);
-                    });
-                    ClientInfo.responseList.remove(0);
+            try {
+                while (true) {
+                    System.out.print("");
+                    synchronized (ClientInfo.responseList) {
+                        if (!ClientInfo.responseList.isEmpty()) {
+                            System.out.println(ClientInfo.responseList.size());
+                            if (ClientInfo.responseList.get(0).command.equals("CHAT")) {
+
+                                String sender = ClientInfo.responseList.get(0).sender;
+                                String message = ClientInfo.responseList.get(0).content;
+                                Platform.runLater(() -> {
+                                    addMessage(sender, message, false);
+                                });
+                                ClientInfo.responseList.remove(0);
+                            }
+                        }
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         ChatListener.setDaemon(true);
